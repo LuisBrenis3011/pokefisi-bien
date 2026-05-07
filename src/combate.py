@@ -170,8 +170,10 @@ class PokemonCombate:
     def __init__(self, data):
         self.id = data.get("id")
         self.name = data.get("name", "")
-        self.tipo1 = data.get("tipo1") or ""
-        self.tipo2 = data.get("tipo2")
+        raw1 = data.get("tipo1") or ""
+        raw2 = data.get("tipo2")
+        self.tipo1 = raw1.capitalize()
+        self.tipo2 = raw2.capitalize() if raw2 and raw2 not in ("null", "") else None
         tipo_unico = data.get("tipo")
         if not self.tipo2 and tipo_unico:
             partes = [t.strip() for t in tipo_unico.split("/") if t.strip()]
@@ -260,7 +262,7 @@ class Combate:
         
         if movimiento.category == "special":
             ataque = atacante.current_spat
-            defensa = atacante.current_spdf or 1
+            defensa = defensor.current_spdf or 1 
         else:
             ataque = atacante.current_attack
             defensa = defensor.current_defense or 1

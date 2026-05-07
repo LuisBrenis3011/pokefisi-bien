@@ -397,26 +397,17 @@ class PantallaBatalla(tk.Frame):
             self.ejecutar_turno(("CAMBIAR", idx))
 
     def ejecutar_turno(self, accion_jugador):
-        self.ocultar_ataques()
-        self.menu_acciones.place_forget() # Ocultar menú para que no spammee clicks
-        
-        # IA del rival (según configuración)
-        if config.NIVEL_IA == "aleatorio":
-            ia = AgenteAleatorio()
-        else:
-            ia = AgenteHeuristicoHP()
-        accion_ia = ia.elegir_accion(self.batalla, es_jugador_1=False)
+         self.ocultar_ataques()
+         self.menu_acciones.place_forget()
+            
+         if config.NIVEL_IA == "aleatorio":
+                ia = AgenteAleatorio()
+         else:
+                ia = AgenteHeuristicoHP()
+         accion_ia = ia.elegir_accion(self.batalla, es_jugador_1=False)
 
-        # Resolver
-        logs = self.batalla.resolver_turno(accion_jugador, accion_ia)
-        
-        # Logging en consola
-        pokemon_jugador = self.batalla.pokemon_actual1.name
-        pokemon_ia = self.batalla.pokemon_actual2.name
-        nombre_mov_jugador = self.batalla.pokemon_actual1.movimientos[accion_jugador[1]].name if accion_jugador[0] == "ATACAR" else f"Cambio a {self.batalla.equipo1[accion_jugador[1]].name}"
-        nombre_mov_ia = self.batalla.pokemon_actual2.movimientos[accion_ia[1]].name if accion_ia[0] == "ATACAR" else f"Cambio a {self.batalla.equipo2[accion_ia[1]].name}"
-        
-        self.procesar_logs(logs)
+         logs = self.batalla.resolver_turno(accion_jugador, accion_ia)
+         self.procesar_logs(logs)
 
     def procesar_logs(self, logs):
         if logs:

@@ -5,8 +5,8 @@ import random
 # ==========================================
 class AgenteAleatorio:
     def elegir_accion(self, batalla, es_jugador_1=False):
-        """Elige un movimiento completamente al azar, sin pensar."""
-        mov_idx = random.randint(0, 3)
+        mi_pokemon = batalla.pokemon_actual1 if es_jugador_1 else batalla.pokemon_actual2
+        mov_idx = random.randint(0, len(mi_pokemon.movimientos) - 1)
         return ("ATACAR", mov_idx)
 
 
