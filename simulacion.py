@@ -15,6 +15,7 @@ def cargar_equipo_desde_json(ruta_json, ids_equipo):
             equipo.append(PokemonCombate(data)) 
     return equipo
 
+
 def ejecutar_combate_ia(agente1, agente2, ids_equipo1, ids_equipo2):
     ruta_datos = os.path.join("data", "pokemons.json")
     equipo1 = cargar_equipo_desde_json(ruta_datos, ids_equipo1)
@@ -23,13 +24,19 @@ def ejecutar_combate_ia(agente1, agente2, ids_equipo1, ids_equipo2):
     batalla = Combate(equipo1, equipo2)
 
     while batalla.juego_terminado() == 0 and batalla.turno_actual < 150:
+
+        # no le preguntamos al agente, elegimos directamente
         if batalla.pokemon_actual1.esta_debilitado():
-            accion1 = agente1.elegir_accion(batalla, True)
-            batalla.aplicar_accion(1, accion1)
+            opciones = [i for i, p in enumerate(batalla.equipo1)
+                        if not p.esta_debilitado()]
+            if opciones:
+                batalla.aplicar_accion(1, ("CAMBIAR", random.choice(opciones)))
 
         if batalla.pokemon_actual2.esta_debilitado():
-            accion2 = agente2.elegir_accion(batalla, False)
-            batalla.aplicar_accion(2, accion2)
+            opciones = [i for i, p in enumerate(batalla.equipo2)
+                        if not p.esta_debilitado()]
+            if opciones:
+                batalla.aplicar_accion(2, ("CAMBIAR", random.choice(opciones)))
 
         if batalla.juego_terminado() != 0:
             break
